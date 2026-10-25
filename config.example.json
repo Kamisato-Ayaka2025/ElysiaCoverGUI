@@ -1,0 +1,12 @@
+{
+  "svc_repo": ".runtime/so-vits-svc",
+  "svc_python": ".runtime/so-vits-svc/workenv/python.exe",
+  "ffmpeg": ".runtime/so-vits-svc/ffmpeg/bin/ffmpeg.exe",
+  "uvr_root": ".runtime/uvr",
+  "uvr_python": ".runtime/uvr/.venv/Scripts/python.exe",
+  "uvr_models": ".runtime/uvr/models",
+  "main_model": "models/G_160000.pth",
+  "main_config": "models/config.json",
+  "diffusion_model": "models/model_350000.pt",
+  "diffusion_config": "models/model_350000.yaml"
+}
