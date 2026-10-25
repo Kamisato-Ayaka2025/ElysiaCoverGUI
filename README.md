@@ -2,7 +2,7 @@
 
 Windows 本地爱莉希雅翻唱工具。仅保留自训 **160000 步主模型**与已有 **350000 步浅扩散模型**的策略；扩散可在界面中开关。这里的 350000 对应 `model_350000.pt`，不是 35000。
 
-仓库包含 GUI 和推理编排源码，不包含模型权重、训练素材、歌曲、生成结果或第三方运行环境。需要自行准备模型及其配置文件；只下载仓库不能直接推理。
+Git 仓库包含 GUI 和推理编排源码；160000 主模型、350000 扩散模型及对应配置单独放在 [GitHub Release v1.0.0](https://github.com/Kamisato-Ayaka2025/ElysiaCoverGUI/releases/tag/v1.0.0)。训练素材、歌曲、生成结果和第三方运行环境不随项目分发；只下载源码不能直接推理。
 
 ## 处理流程
 
@@ -38,7 +38,36 @@ segment: 44
 
 audio-separator 还需要对应模型元数据，首次加载可能联网获取。模型来源及许可请查阅 [UVR](https://github.com/Anjok07/ultimatevocalremovergui)。
 
-准备自训 `G_160000.pth` 和其 `config.json`，以及已有 `model_350000.pt` 和 `model_350000.yaml`。当前策略要求 Elysia 单说话人（ID 0）、vec768l12、44.1 kHz。扩散来自已有模型，不是此次主模型重新训练出的配套扩散，效果需通过开关对照试听判断。
+当前策略要求 Elysia 单说话人（ID 0）、vec768l12、44.1 kHz。扩散来自已有模型，不是此次主模型重新训练出的配套扩散，效果需通过开关对照试听判断。
+
+## 下载模型并放置
+
+打开 [v1.0.0 的 Assets](https://github.com/Kamisato-Ayaka2025/ElysiaCoverGUI/releases/tag/v1.0.0)，下载以下四个文件。不要只下载 GitHub 自动生成的 `Source code` 压缩包，它们不含权重。
+
+| 文件 | 用途 |
+| --- | --- |
+| [G_160000.pth](https://github.com/Kamisato-Ayaka2025/ElysiaCoverGUI/releases/download/v1.0.0/G_160000.pth) | 160000 步主模型，约 628 MB |
+| [config.json](https://github.com/Kamisato-Ayaka2025/ElysiaCoverGUI/releases/download/v1.0.0/config.json) | 主模型对应配置 |
+| [model_350000.pt](https://github.com/Kamisato-Ayaka2025/ElysiaCoverGUI/releases/download/v1.0.0/model_350000.pt) | 350000 步扩散模型，约 221 MB |
+| [model_350000.yaml](https://github.com/Kamisato-Ayaka2025/ElysiaCoverGUI/releases/download/v1.0.0/model_350000.yaml) | 扩散模型对应配置 |
+
+在源码根目录（`app.py` 旁）新建 `models` 文件夹，将四个文件直接放进去，不要再嵌套一层文件夹：
+
+```text
+ElysiaCoverGUI/
+├── app.py
+├── config.example.json
+├── config.local.json
+└── models/
+    ├── G_160000.pth
+    ├── config.json
+    ├── model_350000.pt
+    └── model_350000.yaml
+```
+
+`models/config.json` 是模型结构配置；根目录的 `config.local.json` 是本机路径配置，二者不能互相覆盖。`config.example.json` 已默认指向上述四个相对路径：新建本机配置后只需按实际情况修改运行环境路径。已有 `config.local.json` 的用户需将 `main_model`、`main_config`、`diffusion_model`、`diffusion_config` 更新为 `config.example.json` 中的对应值。
+
+Release 同时提供 `SHA256SUMS.txt`。可用 `Get-FileHash models\G_160000.pth -Algorithm SHA256` 等命令逐项核对下载完整性。文件均为原始模型及对应配置；这个模型包不包含前述 UVR 分离模型、ContentVec、RMVPE、NSF-HiFiGAN 或 Python 环境，仍需完成环境准备。
 
 ## 配置与启动
 
